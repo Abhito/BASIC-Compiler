@@ -20,7 +20,7 @@ public class Basic{
             Lexer lexer = new Lexer();
             //Import file with given path
             //Change src/ to match file path
-            File file = new File("src/" + args[0]);
+            File file = new File(args[0]);
             //Read all lines and save them in list.
             List<String> lines = Files.readAllLines(file.toPath());
             ArrayList<Token> tokenList = new ArrayList<>();
