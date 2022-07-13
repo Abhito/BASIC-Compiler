@@ -1,0 +1,21 @@
+PRINT "Start FOR Test [Counting from 1 -> 10 by 1s]"
+FOR a = 1 TO 10
+PRINT "Counting from 1-10: ", a
+NEXT a
+PRINT "Passed FOR Test"
+PRINT " "
+PRINT "Start GOSUB Test"
+F = 32
+FtoC: C = 5 * (F - 32) / 9
+PRINT F,"*F is equal to ",C,"*C"
+RETURN
+F = 212
+GOSUB FtoC
+PRINT "Passed GOSUB Test"
+a = -5
+PRINT " "
+PRINT "Start IF/THEN Test"
+ifThenTest: PRINT "IF THEN Testing (LessThanEquals)"
+a = a + 1
+IF a <= 0 THEN ifThenTest
+PRINT "Passed IF/THEN Test (LessThanEquals)"
