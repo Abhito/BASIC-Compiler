@@ -5,9 +5,9 @@ import java.util.List;
 
 /**
  * Accepts only one argument.
- * Traverses every line in a given file prints out lexer output.
+ * Traverses every line in a given file prints out executed Code.
  * @author Abhinav Singhal
- * @version 1.5
+ * @version 1.6
  */
 public class Basic{
     public static void main(String[] args) throws Exception{
@@ -31,15 +31,21 @@ public class Basic{
                     System.out.println(e);
                 }
             }
+            /*
+            //Uncomment to see output from Lexer
             for (Token token : tokenList) { //Print ArrayList of tokens
-                System.out.print(token.toString() + " ");
-                if(token.getType() == Token.Types.EndOfLine) System.out.print("\n");
+                //System.out.print(token.toString() + " ");
+                //if(token.getType() == Token.Types.EndOfLine) System.out.print("\n");
             }
             System.out.print("\n");
+            */
             try {
                 Parser parser = new Parser(tokenList); //call parser
                 Node parsed = parser.parse();
+                /*
+                //Uncomment to see output from parser
                 System.out.println(parsed); //print Node
+                 */
                 //Used to test Interpreter
                 Interpreter interpreter = new Interpreter((StatementsNode) parsed);
                 interpreter.initialize();
