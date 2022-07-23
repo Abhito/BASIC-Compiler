@@ -5,10 +5,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Text;
 import com.google.gwt.user.client.ui.RootPanel;
 
-/**
- * Hello world!
- *
- */
+
 public class App implements EntryPoint
 {
     @Override

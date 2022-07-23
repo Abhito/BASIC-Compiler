@@ -25,7 +25,7 @@ public class Basic{
             File file = new File(args[0]);
             //Read all lines and save them in list.
             List<String> lines = Files.readAllLines(file.toPath());
-            ArrayList<Token> tokenList = new ArrayList<>();
+            ArrayList<Token> tokenList = new ArrayList<Token>();
             for (String line : lines) { //Use enhance for loop to traverse list
                 try {
                     tokenList.addAll(lexer.lex(line)); //call lex
