@@ -13,10 +13,10 @@ public class Interpreter {
      *  All of our required global variables
      */
     private final ArrayList<StatementNode> astList;
-    private final HashMap<String, Integer> intData = new HashMap<>();
-    private final HashMap<String, Float> floatData = new HashMap<>();
-    private final HashMap<String, String> stringData = new HashMap<>();
-    private final HashMap<String, Node> labelData = new HashMap<>();
+    private final HashMap<String, Integer> intData = new HashMap<String, Integer>();
+    private final HashMap<String, Float> floatData = new HashMap<String, Float>();
+    private final HashMap<String, String> stringData = new HashMap<String, String>();
+    private final HashMap<String, Node> labelData = new HashMap<String, Node>();
     private ArrayList<Node> globalData;
 
     /**
@@ -46,7 +46,7 @@ public class Interpreter {
      */
     public void interpret(StatementNode statement) throws Exception{
         boolean done = false; //variable to check if we are done going through statements
-        Stack<StatementNode> stackGoSub = new Stack<>(); //stack that contains statements after gosub
+        Stack<StatementNode> stackGoSub = new Stack<StatementNode>(); //stack that contains statements after gosub
         while(!done) {
             //If statement is a READ statement
             if (statement.getClass().equals(ReadNode.class)) {
@@ -591,7 +591,7 @@ public class Interpreter {
      * Walk through AST to find Data Statement
      */
     private void walkforData(){
-        globalData = new ArrayList<>();
+        globalData = new ArrayList<Node>();
         for(int i = 0; i < astList.size(); i++){
             if(astList.get(i).getClass().equals(DataNode.class)){
                 DataNode data = (DataNode)astList.get(i);

@@ -12,7 +12,7 @@ public class Lexer{
     /**
      * Hashmap that stores all known words and their token types.
      */
-    private final HashMap<String, Token.Types> map = new HashMap<>();
+    private final HashMap<String, Token.Types> map = new HashMap<String, Token.Types>();
     /**
      * Constructs a Lexer Object and HashMap containing known words.
      */
@@ -53,7 +53,7 @@ public class Lexer{
      * @return List of Tokens
      */
     public ArrayList<Token> lex(String line) throws IllegalArgumentException{
-        ArrayList<Token> list = new ArrayList<>();
+        ArrayList<Token> list = new ArrayList<Token>();
         String value = "";
         Token.Types state;
         int decimal = 0; //used to make sure numbers don't have more than one decimal point

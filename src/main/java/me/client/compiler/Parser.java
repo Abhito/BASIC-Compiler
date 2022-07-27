@@ -48,7 +48,7 @@ public class Parser {
      * @throws Exception Throws any errors
      */
     private Node Statements() throws Exception {
-        ArrayList<StatementNode> statements = new ArrayList<>();
+        ArrayList<StatementNode> statements = new ArrayList<StatementNode>();
         while(list.size() > 1) { //Token list is empty
             StatementNode statement = Statement();
             if(statement != null) {
@@ -212,7 +212,7 @@ public class Parser {
      * @throws Exception Throws any errors from Factor()
      */
     private ArrayList<Node> dataList() throws Exception {
-        ArrayList<Node> data = new ArrayList<>();
+        ArrayList<Node> data = new ArrayList<Node>();
         Node node = Factor();
         if(node == null) return null;
         data.add(node);
@@ -240,7 +240,7 @@ public class Parser {
      * @throws Exception Throws any errors.
      */
     private ArrayList<VariableNode> readList() throws Exception {
-        ArrayList<VariableNode> reads = new ArrayList<>();
+        ArrayList<VariableNode> reads = new ArrayList<VariableNode>();
         VariableNode variable;
         try { //cast to VariableNode, will throw error if it fails
             variable = (VariableNode) Factor();
@@ -277,7 +277,7 @@ public class Parser {
      * @throws Exception passes any errors
      */
     private ArrayList<Node> printList() throws Exception {
-        ArrayList<Node> prints = new ArrayList<>();
+        ArrayList<Node> prints = new ArrayList<Node>();
         Node expression = Expression();
         if(expression == null) return null;
         prints.add(expression);
