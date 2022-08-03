@@ -4,19 +4,20 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.*;
+import me.client.compiler.*;
 
 import java.util.ArrayList;
 
 
 public class App implements EntryPoint
 {
-    private HorizontalPanel mainPanel = new HorizontalPanel();
-    private HorizontalPanel buttonPanel = new HorizontalPanel();
-    private VerticalPanel inputPanel = new VerticalPanel();
-    private VerticalPanel outputPanel = new VerticalPanel();
-    private VerticalPanel outputCode = new VerticalPanel();
-    private Button compileButton = new Button("Compile");
-    private TextArea codeArea = new TextArea();
+    private final HorizontalPanel mainPanel = new HorizontalPanel();
+    private final HorizontalPanel buttonPanel = new HorizontalPanel();
+    private final VerticalPanel inputPanel = new VerticalPanel();
+    private final VerticalPanel outputPanel = new VerticalPanel();
+    private final VerticalPanel outputCode = new VerticalPanel();
+    private final Button compileButton = new Button("Compile");
+    private final TextArea codeArea = new TextArea();
     @Override
     public void onModuleLoad(){
         //Set up Button Panel
@@ -70,11 +71,38 @@ public class App implements EntryPoint
         }
         lines.add(input);
 
+        lines = compile(lines);
+
+
         outputCode.clear();
         for(String line: lines) {
             Label label = new Label();
             label.setText(line);
             outputCode.add(label);
         }
+    }
+
+    private ArrayList<String> compile(ArrayList<String> lines){
+        Lexer lexer = new Lexer();
+        ArrayList<Token> tokenList = new ArrayList<Token>();
+        ArrayList<String> output = new ArrayList<String>();
+        for (String line : lines) { //Use enhance for loop to traverse list
+            try {
+                tokenList.addAll(lexer.lex(line)); //call lex
+            } catch(Exception e){
+                System.out.println(e);
+            }
+        }
+        try {
+            Parser parser = new Parser(tokenList); //call parser
+            Node parsed = parser.parse();
+            //Used to test Interpreter
+            Interpreter interpreter = new Interpreter((StatementsNode) parsed);
+            interpreter.initialize();
+            output = interpreter.output();
+        }catch(Exception e) {
+            System.out.println(e);
+        }
+        return output;
     }
 }

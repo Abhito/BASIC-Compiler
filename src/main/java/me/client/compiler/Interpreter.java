@@ -19,6 +19,8 @@ public class Interpreter {
     private final HashMap<String, Node> labelData = new HashMap<String, Node>();
     private ArrayList<Node> globalData;
 
+    private final ArrayList<String> statementLines = new ArrayList<String>();
+
     /**
      * Constructor for class
      * @param ast The ast node to interpret.
@@ -70,7 +72,7 @@ public class Interpreter {
                             globalData.remove(0);
                         } else throw new Exception("Data does not match Float Type.");
                     }
-                    //if not any of the above then its assumed to be Integer type so check if current data is integer
+                    //if not any of the above then it's assumed to be Integer type so check if current data is integer
                     else if (globalData.get(0).getClass().equals(IntegerNode.class)) {
                         IntegerNode number = (IntegerNode) globalData.get(0);
                         intData.put(((ReadNode) statement).getList().get(i).getName(), number.getInteger());
@@ -89,9 +91,12 @@ public class Interpreter {
             }
             //If statement is a INPUT Statement
             else if (statement.getClass().equals(InputNode.class)) {
+                /*
                 //check if INPUT has a string output
-                if(((InputNode) statement).returnString() != null)
+                if(((InputNode) statement).returnString() != null) {
                     System.out.println(((InputNode) statement).returnString().returnString()); //print INPUT string
+                    statementLines.add(((InputNode) statement).returnString().returnString());
+                }
                 Scanner key = new Scanner(System.in);
                 for (int i = 0; i < ((InputNode) statement).getList().size(); i++) {
                     //check for variable type
@@ -106,12 +111,15 @@ public class Interpreter {
                         intData.put(((InputNode) statement).getList().get(i).getName(), number);
                     }
                 }
+                key.close();
+                 */
                 if(statement.getNext() == null) done = true;
                 else statement = statement.getNext();
             }
             //if statement is a PRINT statement
             else if (statement.getClass().equals(PrintNode.class)) {
                 System.out.print("\n");//output on new line
+                StringBuilder print = new StringBuilder();
                 //loop through each child of PRINT
                 for (int i = 0; i < ((PrintNode) statement).getList().size(); i++) {
                     //if child is variable
@@ -120,26 +128,41 @@ public class Interpreter {
                         //go through each case
                         if (checkVariableType(variable, '$')) {
                             System.out.print(stringData.get(variable.getName()));
-                        } else if (checkVariableType(variable, '%'))
+                            print.append(stringData.get(variable.getName()));
+                        } else if (checkVariableType(variable, '%')) {
                             System.out.print(floatData.get(variable.getName()));
-                        else System.out.print(intData.get(variable.getName()));
+                            print.append(floatData.get(variable.getName()));
+                        }
+                        else {
+                            System.out.print(intData.get(variable.getName()));
+                            print.append(intData.get(variable.getName()));
+                        }
                     }
                     //if child is stringNode
                     else if (((PrintNode) statement).getList().get(i).getClass().equals(StringNode.class)) {
                         StringNode string = (StringNode) ((PrintNode) statement).getList().get(i);
                         System.out.print(string.returnString());
+                        print.append(string.returnString());
                     }
-                    //for last part its assumed that its an expression, a number, or a function
+                    //for last part its assumed that it's an expression, a number, or a function
                     else {
                         Node node = evaluateMathop(((PrintNode) statement).getList().get(i), 0);
                         //use method depending on the class of Node
-                        if(node.getClass().equals(FloatNode.class)) System.out.print(((FloatNode) node).getFloat());
-                        else if(node.getClass().equals(IntegerNode.class))
+                        if(node.getClass().equals(FloatNode.class)) {
+                            System.out.print(((FloatNode) node).getFloat());
+                            print.append(((FloatNode) node).getFloat());
+                        }
+                        else if(node.getClass().equals(IntegerNode.class)) {
                             System.out.print(((IntegerNode) node).getInteger());
-                        else if(node.getClass().equals(StringNode.class))
+                            print.append(((IntegerNode) node).getInteger());
+                        }
+                        else if(node.getClass().equals(StringNode.class)) {
                             System.out.print(((StringNode) node).returnString());
+                            print.append(((StringNode) node).returnString());
+                        }
                     }
                 }
+                statementLines.add(new String(print));
                 if(statement.getNext() == null) done = true;
                 else statement = statement.getNext();
             }
@@ -307,7 +330,7 @@ public class Interpreter {
      * Handles string functions
      * @param function input function
      * @return string output of function
-     * @throws Exception Throw exception if its not a string type
+     * @throws Exception Throw exception if it's not a string type
      */
     private String stringFunctions(FunctionNode function) throws Exception {
         //for NUM$
@@ -610,5 +633,9 @@ public class Interpreter {
             if(i+1 == astList.size()) astList.get(i).setNext(null);
             else astList.get(i).setNext(astList.get(i+1));
         }
+    }
+
+    public ArrayList<String> output(){
+        return statementLines;
     }
 }
