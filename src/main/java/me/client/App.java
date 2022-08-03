@@ -5,6 +5,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.*;
 
+import java.util.ArrayList;
+
 
 public class App implements EntryPoint
 {
@@ -12,9 +14,9 @@ public class App implements EntryPoint
     private HorizontalPanel buttonPanel = new HorizontalPanel();
     private VerticalPanel inputPanel = new VerticalPanel();
     private VerticalPanel outputPanel = new VerticalPanel();
+    private VerticalPanel outputCode = new VerticalPanel();
     private Button compileButton = new Button("Compile");
     private TextArea codeArea = new TextArea();
-    private Label output = new Label();
     @Override
     public void onModuleLoad(){
         //Set up Button Panel
@@ -31,7 +33,7 @@ public class App implements EntryPoint
         Label outputLabel = new Label();
         outputLabel.setText("Output:");
         outputPanel.add(outputLabel);
-        outputPanel.add(output);
+        outputPanel.add(outputCode);
 
         //Set up Main Panel
         mainPanel.add(inputPanel);
@@ -53,8 +55,26 @@ public class App implements EntryPoint
     }
 
     private void sendToCompiler(){
-        final String input = codeArea.getValue();
-        output.setText(input);
-        outputPanel.add(output);
+        
+        String input = codeArea.getValue();
+        ArrayList<String> lines = new ArrayList<String>();
+
+        int loc = input.indexOf('\n');
+        while(loc > 0){
+            String snippet = input.substring(0, loc);
+            input = input.substring(loc+1);
+
+            lines.add(snippet);
+
+            loc = input.indexOf('\n');
+        }
+        lines.add(input);
+
+        outputCode.clear();
+        for(String line: lines) {
+            Label label = new Label();
+            label.setText(line);
+            outputCode.add(label);
+        }
     }
 }

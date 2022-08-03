@@ -326,7 +326,7 @@ public class Interpreter {
                 else if(checkVariableType(variable, '$')) throw new Exception("Can't use NUM$ on String.");
                 else return String.valueOf(intData.get(variable.getName()));
             }
-            //or its a float
+            //or it's a float
             else{
                 FloatNode number = (FloatNode) function.getParams().get(0);
                 return String.valueOf(number.getFloat());
