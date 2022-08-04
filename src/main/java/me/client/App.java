@@ -1,8 +1,7 @@
 package me.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.user.client.ui.*;
 import me.client.compiler.*;
 
@@ -15,7 +14,7 @@ public class App implements EntryPoint
     private final HorizontalPanel buttonPanel = new HorizontalPanel();
     private final VerticalPanel inputPanel = new VerticalPanel();
     private final VerticalPanel outputPanel = new VerticalPanel();
-    private final VerticalPanel outputCode = new VerticalPanel();
+    public static final VerticalPanel outputCode = new VerticalPanel();
     private final Button compileButton = new Button("Compile");
     private final TextArea codeArea = new TextArea();
     @Override
@@ -56,7 +55,7 @@ public class App implements EntryPoint
     }
 
     private void sendToCompiler(){
-        
+        outputCode.clear();
         String input = codeArea.getValue();
         ArrayList<String> lines = new ArrayList<String>();
 
@@ -71,21 +70,12 @@ public class App implements EntryPoint
         }
         lines.add(input);
 
-        lines = compile(lines);
-
-
-        outputCode.clear();
-        for(String line: lines) {
-            Label label = new Label();
-            label.setText(line);
-            outputCode.add(label);
-        }
+        compile(lines);
     }
 
-    private ArrayList<String> compile(ArrayList<String> lines){
+    private void compile(ArrayList<String> lines){
         Lexer lexer = new Lexer();
         ArrayList<Token> tokenList = new ArrayList<Token>();
-        ArrayList<String> output = new ArrayList<String>();
         for (String line : lines) { //Use enhance for loop to traverse list
             try {
                 tokenList.addAll(lexer.lex(line)); //call lex
@@ -99,10 +89,8 @@ public class App implements EntryPoint
             //Used to test Interpreter
             Interpreter interpreter = new Interpreter((StatementsNode) parsed);
             interpreter.initialize();
-            output = interpreter.output();
         }catch(Exception e) {
             System.out.println(e);
         }
-        return output;
     }
 }

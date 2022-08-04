@@ -1,5 +1,9 @@
 package me.client.compiler;
 
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Label;
+import me.client.App;
+
 import java.util.*;
 
 /**
@@ -18,8 +22,6 @@ public class Interpreter {
     private final HashMap<String, String> stringData = new HashMap<String, String>();
     private final HashMap<String, Node> labelData = new HashMap<String, Node>();
     private ArrayList<Node> globalData;
-
-    private final ArrayList<String> statementLines = new ArrayList<String>();
 
     /**
      * Constructor for class
@@ -91,28 +93,42 @@ public class Interpreter {
             }
             //If statement is a INPUT Statement
             else if (statement.getClass().equals(InputNode.class)) {
-                /*
+                String output = "";
                 //check if INPUT has a string output
                 if(((InputNode) statement).returnString() != null) {
                     System.out.println(((InputNode) statement).returnString().returnString()); //print INPUT string
-                    statementLines.add(((InputNode) statement).returnString().returnString());
+                    //statementLines.add(((InputNode) statement).returnString().returnString());
+                    Label label = new Label();
+                    output = ((InputNode) statement).returnString().returnString();
+                    label.setText(((InputNode) statement).returnString().returnString());
+                    App.outputCode.add(label);
                 }
-                Scanner key = new Scanner(System.in);
+                //Scanner key = new Scanner(System.in);
                 for (int i = 0; i < ((InputNode) statement).getList().size(); i++) {
+                    //App.outputCode.add(App.input);
+                    String input = Window.prompt("INPUT: " + output, "");
+
                     //check for variable type
                     if (checkVariableType(((InputNode) statement).getList().get(i), '$')) {
-                        String str = key.nextLine();
-                        stringData.put(((InputNode) statement).getList().get(i).getName(), str);
+                        stringData.put(((InputNode) statement).getList().get(i).getName(), input);
                     } else if (checkVariableType(((InputNode) statement).getList().get(i), '$')) {
-                        Float number = key.nextFloat();
-                        floatData.put(((InputNode) statement).getList().get(i).getName(), number);
+                        try {
+                            Float number = Float.parseFloat(input);
+                            floatData.put(((InputNode) statement).getList().get(i).getName(), number);
+                        }catch(Exception e){
+                            throw new Exception("Input does not match float variable type.");
+                        }
                     } else {
-                        int number = key.nextInt();
-                        intData.put(((InputNode) statement).getList().get(i).getName(), number);
+                        try {
+                            int number = Integer.parseInt(input);
+                            intData.put(((InputNode) statement).getList().get(i).getName(), number);
+                        } catch(Exception e){
+                            throw new Exception("Input does not match integer variable type");
+                        }
                     }
+                    //App.outputCode.remove(App.input);
                 }
-                key.close();
-                 */
+
                 if(statement.getNext() == null) done = true;
                 else statement = statement.getNext();
             }
@@ -162,7 +178,10 @@ public class Interpreter {
                         }
                     }
                 }
-                statementLines.add(new String(print));
+                Label label = new Label();
+                label.setText(new String(print));
+                App.outputCode.add(label);
+                //statementLines.add(new String(print));
                 if(statement.getNext() == null) done = true;
                 else statement = statement.getNext();
             }
@@ -633,9 +652,5 @@ public class Interpreter {
             if(i+1 == astList.size()) astList.get(i).setNext(null);
             else astList.get(i).setNext(astList.get(i+1));
         }
-    }
-
-    public ArrayList<String> output(){
-        return statementLines;
     }
 }
