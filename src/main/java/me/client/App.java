@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public class App implements EntryPoint
 {
-    private final HorizontalPanel mainPanel = new HorizontalPanel();
     private final HorizontalPanel buttonPanel = new HorizontalPanel();
     private final VerticalPanel inputPanel = new VerticalPanel();
     private final VerticalPanel outputPanel = new VerticalPanel();
@@ -19,9 +18,15 @@ public class App implements EntryPoint
     private final TextArea codeArea = new TextArea();
     @Override
     public void onModuleLoad(){
+        inputPanel.addStyleName("inputSide");
+        outputPanel.addStyleName("outputSide");
+
         //Set up Button Panel
         Label inputLabel = new Label();
         inputLabel.setText("Input:");
+        compileButton.addStyleDependentName("compile");
+        buttonPanel.addStyleName("buttonPanel");
+
         buttonPanel.add(inputLabel);
         buttonPanel.add(compileButton);
 
@@ -32,15 +37,13 @@ public class App implements EntryPoint
         //Set up Output Panel
         Label outputLabel = new Label();
         outputLabel.setText("Output:");
+        outputCode.addStyleName("outputPanel");
         outputPanel.add(outputLabel);
         outputPanel.add(outputCode);
 
-        //Set up Main Panel
-        mainPanel.add(inputPanel);
-        mainPanel.add(outputPanel);
-
         //Associate the Main panel with the HTML host page.
-        RootPanel.get("editor").add(mainPanel);
+        RootPanel.get("editor").add(inputPanel);
+        RootPanel.get("editor").add(outputPanel);
         //Move cursor focus to the input box.
         codeArea.setFocus(true);
 
@@ -52,6 +55,29 @@ public class App implements EntryPoint
             }
         });
 
+        codeArea.setVisibleLines(1);
+        codeArea.getElement().setAttribute("wrap", "off");
+
+        codeArea.addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent changeEvent) {
+                System.out.println("Value Changed");
+            }
+        });
+        codeArea.addKeyPressHandler(new KeyPressHandler() {
+            @Override
+            public void onKeyPress(KeyPressEvent keyPressEvent) {
+                int lines = 0;
+                final String s = codeArea.getText();
+                for(int i = 0; i != -1; i = s.indexOf("\n", i + 1)){
+                    lines++;
+                }
+                if(keyPressEvent.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER){
+                    lines++;
+                }
+                codeArea.setVisibleLines(lines);
+            }
+        });
     }
 
     private void sendToCompiler(){
@@ -80,7 +106,9 @@ public class App implements EntryPoint
             try {
                 tokenList.addAll(lexer.lex(line)); //call lex
             } catch(Exception e){
-                System.out.println(e);
+                Label error = new Label();
+                error.setText(String.valueOf(e));
+                outputPanel.add(error);
             }
         }
         try {
@@ -90,7 +118,9 @@ public class App implements EntryPoint
             Interpreter interpreter = new Interpreter((StatementsNode) parsed);
             interpreter.initialize();
         }catch(Exception e) {
-            System.out.println(e);
+            Label error = new Label();
+            error.setText(String.valueOf(e));
+            outputPanel.add(error);
         }
     }
 }

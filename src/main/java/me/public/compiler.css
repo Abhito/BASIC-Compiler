@@ -1,0 +1,45 @@
+body{
+    margin: 0;
+}
+.gwt-TextArea{
+    resize: none;
+    width: 100%;
+    float: top;
+}
+.gwt-Button-compile{
+    float: right;
+}
+.gwt-Label-line{
+    margin: 0;
+}
+.main{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 10px;
+    margin: 0 auto;
+    padding: 20px 10px;
+    max-width: 1500px;
+    height: 1000px;
+}
+.inputSide{
+    width:100%;
+    margin: 0;
+    max-width: 700px;
+    max-height: 700px;
+}
+.outputSide{
+    width: 100%;
+    margin: 0;
+    max-width: 700px;
+}
+.buttonPanel{
+    width: 100%;
+}
+.outputPanel{
+    height: 100%;
+    max-height: 900px;
+}
