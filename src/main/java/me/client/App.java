@@ -37,7 +37,8 @@ public class App implements EntryPoint
         //Set up Output Panel
         Label outputLabel = new Label();
         outputLabel.setText("Output:");
-        outputCode.addStyleName("outputPanel");
+        outputLabel.setStyleName("outputLabel");
+        outputCode.addStyleName("outputCode");
         outputPanel.add(outputLabel);
         outputPanel.add(outputCode);
 
@@ -55,7 +56,8 @@ public class App implements EntryPoint
             }
         });
 
-        codeArea.setVisibleLines(1);
+        final int defaultlines = 5;
+        codeArea.setVisibleLines(defaultlines);
         codeArea.getElement().setAttribute("wrap", "off");
 
         codeArea.addChangeHandler(new ChangeHandler() {
@@ -75,7 +77,7 @@ public class App implements EntryPoint
                 if(keyPressEvent.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER){
                     lines++;
                 }
-                codeArea.setVisibleLines(lines);
+                codeArea.setVisibleLines(Math.max(lines, defaultlines));
             }
         });
     }
@@ -108,7 +110,8 @@ public class App implements EntryPoint
             } catch(Exception e){
                 Label error = new Label();
                 error.setText(String.valueOf(e));
-                outputPanel.add(error);
+                error.setStyleName("errorLabel");
+                outputCode.add(error);
             }
         }
         try {
@@ -120,7 +123,8 @@ public class App implements EntryPoint
         }catch(Exception e) {
             Label error = new Label();
             error.setText(String.valueOf(e));
-            outputPanel.add(error);
+            error.setStyleName("errorLabel");
+            outputCode.add(error);
         }
     }
 }

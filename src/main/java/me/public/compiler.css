@@ -1,16 +1,31 @@
 body{
     margin: 0;
+    font-family: sans-serif;
+    background-color: #81d4fa;
+}
+header{
+    width: 100%;
+    background-color: #4ba3c7;
+    height: 60px;
+    top: 0;
+    display: flex;
+    align-items: center;
+    position: fixed;
 }
 .gwt-TextArea{
     resize: none;
-    width: 100%;
-    float: top;
+    width: 99%;
+    float: left;
+    vertical-align: top;
+    background-color: #b6ffff;
 }
 .gwt-Button-compile{
     float: right;
+    height: 100%;
+    background-color: #1de9b6;
 }
 .gwt-Label-line{
-    margin: 0;
+    margin-left: 5px;
 }
 .main{
     display: flex;
@@ -21,7 +36,7 @@ body{
     align-content: flex-start;
     gap: 10px;
     margin: 0 auto;
-    padding: 20px 10px;
+    padding-top: 90px;
     max-width: 1500px;
     height: 1000px;
 }
@@ -30,16 +45,34 @@ body{
     margin: 0;
     max-width: 700px;
     max-height: 700px;
+    background-color: #6effe8;
 }
 .outputSide{
     width: 100%;
     margin: 0;
     max-width: 700px;
+    background-color: #6effe8;
 }
-.buttonPanel{
+.buttonPanel, .outputLabel{
     width: 100%;
+    height: 20px;
+    background-color: #6effe8;
+    margin-bottom: 3px;
 }
-.outputPanel{
-    height: 100%;
+.outputCode{
+    width: 100%;
+    height: 100px;
     max-height: 900px;
+    background-color: #b6ffff;
 }
+.errorLabel{
+    color: white;
+    background-color: #c62828;
+    width: 99%;
+    padding-left: 5px;
+}
+/*
+    Greens #1de9b6, #6effe8, #00b686
+    Reds #c62828, #ff5f52, #8e0000
+    Blues #81d4fa,#b6ffff, #4ba3c7
+ */
